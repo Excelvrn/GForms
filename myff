@@ -1,5 +1,5 @@
 function myff() {
-  var doc = FormApp.getActiveForm();
+var doc = FormApp.getActiveForm();
 
   // Access the body of the document, then add a paragraph.
   //doc.getBody().appendParagraph('This document was created by Google Apps Script.');
@@ -17,13 +17,11 @@ function myff() {
   //var texto = "Hello! From GMail";
 
   // Set doc`s URL
-  //var values = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1qRva0o3D0x4yYYk-KcB5GnT4-fL0t4VLlau8yGzbesU/edit#gid=1640624130");
-  // https://docs.google.com/spreadsheets/d/1NnrvjWeNCQaPtGUG-4UfpQft6z81YW4ws5Hsq4Pi6bg/edit?usp=sharing
-  var values = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1NnrvjWeNCQaPtGUG-4UfpQft6z81YW4ws5Hsq4Pi6bg/edit?usp=sharing");
+  var values = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1NnrvjWeNCQaPtGUG-4UfpQft6z81YW4ws5Hsq4Pi6bg/edit#gid=333916551");
   //texto = values.getActiveSheet().getActiveRange();
   texto = SpreadsheetApp.getCurrentCell();
   //Set count
-  var cell = values.getActiveSheet().getRange("W1");
+  var cell = values.getActiveSheet().getRange("BK1");
   
   var integ = cell.getValue();
   integ = integ + 1;
@@ -31,7 +29,7 @@ function myff() {
   var vadr = "B";
   vadr += integ.toString();
   vadr +=":";
-  vadr+= "U";
+  vadr+= "BG";
   vadr+=integ.toString();
 
   cell = values.getActiveSheet().getRange(vadr);
@@ -40,13 +38,33 @@ function myff() {
   //var cell = values.getActiveSheet().getRange("A2:D2");
   //texto = cell.getValues();
   texto = cell.getValues();
+  //
+  //  https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/concat
+  //
+  var k = texto[0][0];
+  k+="\n";
+  k += texto[0][1] ;
+  k = texto[0];
+  k = k.length-1;
+  
+  var stext="";
+  for (var i=0; i<=k; i++){
+    stext+=texto[0][i];
+    if (i<(texto[0].length -1))
+      stext+="\n";
+      //texto[0][i] = (texto[0][i]).substring(1);
+  }
+  stext = texto[0][0]+"\n" + texto[0][1]+"\nДокумент, удостоверяющий личность:\t"+ texto[0][2] + ", " + texto[0][3] + ", " + texto[0][4];
+
+  //k = k+ "\n";
+  //k = texto[0][1];
   //texto = vadr;
   //texto = vadr;
   // Send yourself an email with a link to the document.
-  GmailApp.sendEmail(email, subject, texto);
-  GmailApp.sendEmail("nmorozov@artdental.company", subject, texto);
+  GmailApp.sendEmail(email, subject, stext);
 
   var ankdoc = DocumentApp.create(texto[0][0]);
   var adbody = ankdoc.getBody();
-  adbody.setText(texto[0][3]);
+  //adbody.setText(texto[0]);
+  adbody.setText(stext);
 }
